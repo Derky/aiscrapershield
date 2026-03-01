@@ -1,0 +1,4 @@
+derky_aiscrapershield_controller:
+    path: /ai-scraper-shield
+    defaults: { _controller: derky.aiscrapershield.controller.shield:handle }
+    methods: [GET, POST]

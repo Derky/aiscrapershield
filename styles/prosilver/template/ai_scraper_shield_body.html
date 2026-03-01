@@ -1,0 +1,31 @@
+{% include 'overall_header.html' %}
+
+<form method="post" id="login" data-focus="<!-- IF S_ADMIN_AUTH -->{PASSWORD_CREDENTIAL}<!-- ELSE -->{USERNAME_CREDENTIAL}<!-- ENDIF -->">
+	<div class="panel">
+		<div class="inner">
+
+			<div class="content">
+
+				<h2>{L_SHIELD_TITLE}</h2>
+				<p>{L_SHIELD_EXPLAIN}</p>
+
+				<fieldset class="fields1">
+					<!-- IF ERROR --><div class="error">{ERROR}</div><!-- ENDIF -->
+
+					<!-- IF CAPTCHA_TEMPLATE -->
+					<!-- DEFINE $CAPTCHA_TAB_INDEX = 3 -->
+					<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
+					<!-- ENDIF -->
+
+					{S_FORM_TOKEN}
+					<dl>
+						<dt>&nbsp;</dt>
+						<dd><input type="submit" name="submit" tabindex="6" value="{L_CONTINUE}" class="button1" /></dd>
+					</dl>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+</form>
+
+{% include 'overall_footer.html' %}

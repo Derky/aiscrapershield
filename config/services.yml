@@ -1,8 +1,28 @@
 services:
+    derky.aiscrapershield.service.shield:
+        class: derky\aiscrapershield\service\shield_service
+        arguments:
+            - '@dbal.conn'
+    derky.aiscrapershield.controller.shield:
+        class: derky\aiscrapershield\controller\shield_controller
+        arguments:
+            - '@captcha.factory'
+            - '@config'
+            - '@controller.helper'
+            - '@language'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '@request'
+            - '@derky.aiscrapershield.service.shield'
+            - '@template'
+            - '@user'
     derky.aiscrapershield.listener:
         class: derky\aiscrapershield\event\main_listener
         arguments:
+            - '@controller.helper'
             - '@language'
+            - '%core.php_ext%'
+            - '@request'
             - '@user'
         tags:
             - { name: event.listener }

@@ -35,5 +35,9 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
-
+	'AI_SCRAPER_SHIELD'	=> 'AI & Scraper Shield',
+	'CONTINUE' => 'Continue',
+	'SHIELD_PAGE_TITLE' => 'Verification required',
+	'SHIELD_TITLE' => 'Quick human verification required',
+	'SHIELD_EXPLAIN' => 'To protect our forum from bots and AI scrapers, please complete a short verification. After that, you can continue viewing topics as a guest.',
 ]);
