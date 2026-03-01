@@ -1,0 +1,8 @@
+services:
+    derky.aiscrapershield.listener:
+        class: derky\aiscrapershield\event\main_listener
+        arguments:
+            - '@language'
+            - '@user'
+        tags:
+            - { name: event.listener }
