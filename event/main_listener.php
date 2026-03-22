@@ -23,7 +23,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		return [
 			'core.user_setup' => 'load_language_on_setup',
-			'core.viewtopic_modify_forum_id' => 'check_session',
+			'core.viewtopic_gen_sort_selects_before' => 'check_session',
 			'core.viewonline_overwrite_location' => 'viewonline_page',
 		];
 	}
