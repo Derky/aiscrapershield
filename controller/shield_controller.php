@@ -20,9 +20,13 @@ use phpbb\captcha\factory;
 use phpbb\user;
 use phpbb\request\request_interface;
 use derky\aiscrapershield\service\shield_service;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class shield_controller
 {
+	const MAX_SHIELD_ATTEMPTS = 3;
+	const CONFIRM_AI_SCRAPER_SHIELD = 5;
+
 	public function __construct(
 		protected factory $captcha_factory,
 		protected config $config,
@@ -55,10 +59,14 @@ class shield_controller
 		$form_name = 'ai_scraper_shield';
 
 		$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
-		$captcha->init(CONFIRM_POST);
+		$captcha->init(self::CONFIRM_AI_SCRAPER_SHIELD);
+
+		$this->validateCaptchaAttempts($captcha);
 
 		if ($submit)
 		{
+			$error = [];
+
 			if (!check_form_key($form_name))
 			{
 				$error[] = $this->language->lang('FORM_INVALID');
@@ -73,19 +81,18 @@ class shield_controller
 				{
 					$error[] = $vc_response;
 				}
-				else
+				$this->validateCaptchaAttempts($captcha);
+
+				if (empty($error) && $captcha->is_solved() === true)
 				{
-					if ($captcha->is_solved() === true)
-					{
-						$captcha->reset();
-						$this->shield_service->mark_shield_passed($this->user->session_id);
+					$captcha->reset();
+					$this->shield_service->mark_shield_passed($this->user->session_id);
 
-						$redirect_url = $redirect ?: ($this->request->header('Referer') ?: append_sid($this->phpbb_root_path . 'index.' . $this->phpbb_ext));
+					$redirect_url = $redirect ?: ($this->request->header('Referer') ?: append_sid($this->phpbb_root_path . 'index.' . $this->phpbb_ext));
 
-						// Decode is needed because additional parameters such as &hilit= are decoded as &amp;hilit= and will otherwise be blocked as "INSECURE_REDIRECT"
-						$redirect_url = htmlspecialchars_decode(redirect($redirect_url, true), ENT_QUOTES);
-						return new RedirectResponse($redirect_url);
-					}
+					// Decode is needed because additional parameters such as &hilit= are decoded as &amp;hilit= and will otherwise be blocked as "INSECURE_REDIRECT"
+					$redirect_url = htmlspecialchars_decode(redirect($redirect_url, true), ENT_QUOTES);
+					return new RedirectResponse($redirect_url);
 				}
 			}
 		}
@@ -98,5 +105,13 @@ class shield_controller
 		));
 
 		return $this->helper->render('@derky_aiscrapershield/ai_scraper_shield_body.html', $page_title);
+	}
+
+	protected function validateCaptchaAttempts(object $captcha): void
+	{
+		if (self::MAX_SHIELD_ATTEMPTS && $captcha->get_attempt_count() >= self::MAX_SHIELD_ATTEMPTS)
+		{
+			throw new TooManyRequestsHttpException(null, $this->language->lang('SHIELD_TOO_MANY_ATTEMPTS'));
+		}
 	}
 }

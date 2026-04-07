@@ -40,4 +40,5 @@ $lang = array_merge($lang, [
 	'SHIELD_PAGE_TITLE' => 'Verification required',
 	'SHIELD_TITLE' => 'Quick human verification required',
 	'SHIELD_EXPLAIN' => 'To protect our forum from bots and AI scrapers, please complete a short verification. After that, you can continue viewing topics as a guest.',
+	'SHIELD_TOO_MANY_ATTEMPTS' => 'You have exceeded the maximum number of human verification attempts for this session. Please try again later.',
 ]);
