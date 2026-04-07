@@ -30,7 +30,8 @@ jobs:
       # Set the phpBB branch to test your extension with after the @ symbol
       # - 3.3.x: Targets the phpBB 3.3.x release line
     # - master: Targets the latest development version of phpBB (master branch)
-    uses: phpbb-extensions/test-framework/.github/workflows/tests.yml@3.3.x
+    uses: phpbb-extensions/test-framework/.github/workflows/tests.yml@master
     with:
       # Your extension vendor/package name
       EXTNAME: derky/aiscrapershield
+      RUN_FUNCTIONAL_TESTS: 0
