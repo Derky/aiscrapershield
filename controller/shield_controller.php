@@ -104,7 +104,7 @@ class shield_controller
 			'ERROR'	=> !empty($error) ? implode('<br />', $error) : '',
 		));
 
-		return $this->helper->render('@derky_aiscrapershield/ai_scraper_shield_body.html', $page_title);
+		return $this->helper->render('@derky_aiscrapershield/ai_scraper_shield_body.html', $page_title, Response::HTTP_FORBIDDEN);
 	}
 
 	protected function validateCaptchaAttempts(object $captcha): void
