@@ -91,7 +91,7 @@ class shield_controller
 					$redirect_url = $redirect ?: ($this->request->header('Referer') ?: append_sid($this->phpbb_root_path . 'index.' . $this->phpbb_ext));
 
 					// Decode is needed because additional parameters such as &hilit= are decoded as &amp;hilit= and will otherwise be blocked as "INSECURE_REDIRECT"
-					$redirect_url = htmlspecialchars_decode(redirect($redirect_url, true), ENT_QUOTES);
+					$redirect_url = redirect(htmlspecialchars_decode($redirect_url, ENT_QUOTES), true);
 					return new RedirectResponse($redirect_url);
 				}
 			}
